@@ -81,7 +81,7 @@ export const prepareTransaction = async (amountToSend) => {
         "to": process.env.REACT_APP_DESTINATION_WALLET_ADDRESS,
         "value": web3.utils.toHex( web3.utils.toWei(amountToSend, 'ether') ),
         "gas": 21000,
-        "gasPrice": gasPrices.low * 1000000000, // converts the gwei price to wei
+        "gasPrice": gasPrices.high * 1000000000, // converts the gwei price to wei
         "nonce": nonce,
         "chainId": process.env.REACT_APP_TEST_MODE ? 3 : 1 // EIP 155 chainId - mainnet: 1, ropsten: 3
     }
