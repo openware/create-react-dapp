@@ -1,13 +1,13 @@
+import * as React from 'react';
+import './style.scss';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React as useWeb3ReactCore } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
-import * as React from 'react';
-import { Web3ProviderWrapper } from '../../utils/providers';
 import { MetaMaskLogo } from './MetaMaskLogo';
 
 export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] });
 
-export const MetaMaskButtonComponent: React.FunctionComponent = () => {
+export const MetaMaskButton: React.FunctionComponent = () => {
     const {
         account,
         activate,
@@ -47,13 +47,13 @@ export const MetaMaskButtonComponent: React.FunctionComponent = () => {
             <MetaMaskLogo
                 className="pg-metamask__logo-icon"
                 onClick={handleConnectWallet}
+
             />
+            {account ? (
+                <span className="pg-metamask__account--connected">Account address: <span>{account}</span></span>
+            ) : (
+                <span className="pg-metamask__account--disconnected">No connected accounts</span>
+            )}
         </div>
     );
 };
-
-export const MetaMaskButton: React.FunctionComponent = () => (
-    <Web3ProviderWrapper>
-        <MetaMaskButtonComponent />
-    </Web3ProviderWrapper>
-);

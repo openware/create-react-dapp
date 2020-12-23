@@ -1,0 +1,22 @@
+.pg-metamask {
+  &__logo-icon {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  &__account {
+    margin: 10px 0;
+
+    &--connected span {
+      color: #007bff;
+    }
+
+    &--disconnected {
+      color: grey;
+    }
+  }
+}

@@ -1,10 +1,13 @@
 import * as React from 'react';
 import * as RB from 'react-bootstrap';
+import { useWeb3React as useWeb3ReactCore } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { broadcastTransaction } from '../../scripts/broadcast-transaction';
 import { prepareTransaction } from '../../scripts/prepare-transaction';
 import { signTransaction } from '../../scripts/sign-transaction';
 
 export const TransactionCreator = () => {
+    const { account } = useWeb3ReactCore<Web3Provider>();
     const [isTxLoading, setIsTxLoading] = React.useState(false);
     const [amount, setAmount] = React.useState('');
     const [executedTxId, setExecutedTxId] = React.useState(undefined);
@@ -13,7 +16,7 @@ export const TransactionCreator = () => {
         setIsTxLoading(true)
         setExecutedTxId(undefined)
 
-        prepareTransaction(amount).then(preparedTx =>
+        prepareTransaction(amount, account).then(preparedTx =>
             signTransaction(preparedTx).then(signedTx =>
                 broadcastTransaction(signedTx).then(executedTx => {
                         setExecutedTxId(executedTx.transactionHash);

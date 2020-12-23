@@ -45,7 +45,7 @@ export const getCurrentGasPrices = async () => {
 /**
  * This is the process that will run when you execute the program.
  */
-export const prepareTransaction = async (amountToSend) => {
+export const prepareTransaction = async (amountToSend, account) => {
     /**
      * Fetch the balance of the destination address
      */
@@ -58,7 +58,7 @@ export const prepareTransaction = async (amountToSend) => {
     /**
      * Fetch your personal wallet's balance
      */
-    let myBalanceWei = await web3.eth.getBalance(web3.eth.defaultAccount);
+    let myBalanceWei = await web3.eth.getBalance(account || web3.eth.defaultAccount);
     let myBalance = await web3.utils.fromWei(myBalanceWei, 'ether');
 
     window.console.log(`Your wallet balance is currently ${myBalance} ETH`)
@@ -68,7 +68,7 @@ export const prepareTransaction = async (amountToSend) => {
      * With every new transaction you send using a specific wallet address,
      * you need to increase a nonce which is tied to the sender wallet.
      */
-    let nonce = await web3.eth.getTransactionCount(web3.eth.defaultAccount);
+    let nonce = await web3.eth.getTransactionCount(account || web3.eth.defaultAccount);
     window.console.log(`The outgoing transaction count for your wallet address is: ${nonce}`)
 
 
@@ -79,7 +79,7 @@ export const prepareTransaction = async (amountToSend) => {
 
     const details = {
         "to": process.env.REACT_APP_DESTINATION_WALLET_ADDRESS,
-        "value": web3.utils.toHex( web3.utils.toWei(amountToSend, 'ether') ),
+        "value": web3.utils.toHex( web3.utils.toWei(amountToSend || '0', 'ether') ),
         "gas": 21000,
         "gasPrice": gasPrices.high * 1000000000, // converts the gwei price to wei
         "nonce": nonce,
