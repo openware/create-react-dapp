@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as RB from 'react-bootstrap';
 import { getCurrentGasPrices } from '../../scripts/prepare-transaction';
+import './style.scss';
 
 export const GasPrices = () => {
     const [gasPrices, setGasPrices] = React.useState({ low: 0, medium: 0, high: 0 });
@@ -18,19 +19,15 @@ export const GasPrices = () => {
         <div className="gas-prices">
             <RB.Container className="mt-5">
                 <h3>Current gas prices</h3>
-                <RB.Row className="justify-content-md-center">
-                    <RB.Col xs lg="3">
+                <RB.Row className="justify-content-md-center mt-4 mb-5">
+                    <RB.Col className="justify-content-md-center price-card">
                         <span style={{color: 'red'}}>Low: {gasPrices.low}</span>
                     </RB.Col>
-                </RB.Row>
-                <RB.Row className="justify-content-md-center">
-                    <RB.Col xs lg="3">
+                    <RB.Col className="justify-content-md-center price-card">
                         <span style={{color: 'orange'}}>Average: {gasPrices.medium}</span>
                     </RB.Col>
-                </RB.Row>
-                <RB.Row className="justify-content-md-center mb-5">
-                    <RB.Col xs lg="3">
-                        <span style={{color: 'green'}}>high: {gasPrices.high}</span>
+                    <RB.Col className="justify-content-md-center price-card">
+                        <span style={{color: 'green'}}>High: {gasPrices.high}</span>
                     </RB.Col>
                 </RB.Row>
             </RB.Container>

@@ -5,6 +5,8 @@ import { Web3Provider } from '@ethersproject/providers';
 import { broadcastTransaction } from '../../scripts/broadcast-transaction';
 import { prepareTransaction } from '../../scripts/prepare-transaction';
 import { signTransaction } from '../../scripts/sign-transaction';
+import { BalanceComponent } from '../Balance';
+import './style.scss';
 
 export const TransactionCreator = () => {
     const { account } = useWeb3ReactCore<Web3Provider>();
@@ -33,28 +35,31 @@ export const TransactionCreator = () => {
         <div className="transaction-creator">
             <RB.Container>
                 <h3>Transaction creator</h3>
-                <RB.Row className="justify-content-md-center">
-                    <RB.Col xs lg="6">
-                        <RB.InputGroup className="mb-3 mw-50">
-                            <RB.InputGroup.Prepend>
-                                <RB.InputGroup.Text id="basic-addon2">ETH</RB.InputGroup.Text>
-                            </RB.InputGroup.Prepend>
-                            <RB.FormControl
-                                placeholder="Enter amount to send"
-                                aria-label="Amount to send"
-                                aria-describedby="basic-addon2"
-                                onChange={e => setAmount(e.target.value)}
-                            />
-                            <RB.InputGroup.Append>
-                                <RB.Button
-                                    onClick={handlePrepareTransaction}
-                                    variant="outline-secondary"
-                                >
-                                    Send
-                                </RB.Button>
-                            </RB.InputGroup.Append>
-                        </RB.InputGroup>
-                    </RB.Col>
+                <RB.Row className="justify-content-md-center mb-7">
+                    <div className="form">
+                        <RB.Col>
+                            <RB.InputGroup className="mb-3 mw-50">
+                                <RB.FormControl
+                                    placeholder="Enter amount to send"
+                                    aria-label="Amount to send"
+                                    aria-describedby="basic-addon2"
+                                    value={amount}
+                                    onChange={e => setAmount(e.target.value)}
+                                />
+                                <RB.InputGroup.Append>
+                                    <RB.InputGroup.Text id="basic-addon2">ETH</RB.InputGroup.Text>
+                                </RB.InputGroup.Append>
+                            </RB.InputGroup>
+                            <BalanceComponent handleChangeAmount={setAmount}/>
+                            <RB.Button
+                                onClick={handlePrepareTransaction}
+                                variant="primary"
+                                className="w-100"
+                            >
+                                Send
+                            </RB.Button>
+                        </RB.Col>
+                    </div>
                 </RB.Row>
                 {executedTxId ? (
                     <RB.Row className="justify-content-md-center">

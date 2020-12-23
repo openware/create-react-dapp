@@ -90,3 +90,10 @@ export const prepareTransaction = async (amountToSend, account) => {
 
     return serializedTransaction;
 }
+
+export const getMyWalletBalance = async () => {
+    let myBalanceWei = await web3.eth.getBalance(web3.eth.defaultAccount);
+    let myBalance = await web3.utils.fromWei(myBalanceWei, 'ether');
+
+    return myBalance;
+};
