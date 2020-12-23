@@ -45,24 +45,15 @@ export const getCurrentGasPrices = async () => {
 /**
  * This is the process that will run when you execute the program.
  */
-export const prepareTransaction = async (amountToSend, account) => {
+export const prepareTransaction = async (amountToSend, account, destinationAddress) => {
     /**
      * Fetch the balance of the destination address
      */
 
-    let destinationBalanceWei = await web3.eth.getBalance(process.env.REACT_APP_DESTINATION_WALLET_ADDRESS);
+    let destinationBalanceWei = await web3.eth.getBalance(destinationAddress);
     let destinationBalance = await web3.utils.fromWei(destinationBalanceWei, 'ether');
 
     window.console.log(`Destination wallet balance is currently ${destinationBalance} ETH`)
-
-    /**
-     * Fetch your personal wallet's balance
-     */
-    let myBalanceWei = await web3.eth.getBalance(account || web3.eth.defaultAccount);
-    let myBalance = await web3.utils.fromWei(myBalanceWei, 'ether');
-
-    window.console.log(`Your wallet balance is currently ${myBalance} ETH`)
-
 
     /**
      * With every new transaction you send using a specific wallet address,
@@ -78,7 +69,7 @@ export const prepareTransaction = async (amountToSend, account) => {
     let gasPrices = await getCurrentGasPrices()
 
     const details = {
-        "to": process.env.REACT_APP_DESTINATION_WALLET_ADDRESS,
+        "to": destinationAddress,
         "value": web3.utils.toHex( web3.utils.toWei(amountToSend || '0', 'ether') ),
         "gas": 21000,
         "gasPrice": gasPrices.high * 1000000000, // converts the gwei price to wei
@@ -91,9 +82,14 @@ export const prepareTransaction = async (amountToSend, account) => {
     return serializedTransaction;
 }
 
-export const getMyWalletBalance = async () => {
-    let myBalanceWei = await web3.eth.getBalance(web3.eth.defaultAccount);
+/**
+ * Fetch your personal wallet's balance
+ * @param {*} account 
+ */
+export const getMyWalletBalance = async (account) => {
+    let myBalanceWei = await web3.eth.getBalance(account || web3.eth.defaultAccount);
     let myBalance = await web3.utils.fromWei(myBalanceWei, 'ether');
 
+    window.console.log(`Your wallet balance is currently ${myBalance} ETH`)
     return myBalance;
 };

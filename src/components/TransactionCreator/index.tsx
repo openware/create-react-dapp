@@ -13,12 +13,13 @@ export const TransactionCreator = () => {
     const [isTxLoading, setIsTxLoading] = React.useState(false);
     const [amount, setAmount] = React.useState('');
     const [executedTxId, setExecutedTxId] = React.useState(undefined);
+    const [address, setAddress] = React.useState('');
 
     const handlePrepareTransaction = () => {
         setIsTxLoading(true)
         setExecutedTxId(undefined)
 
-        prepareTransaction(amount, account).then(preparedTx =>
+        prepareTransaction(amount, account, address || process.env.REACT_APP_DESTINATION_WALLET_ADDRESS).then(preparedTx =>
             signTransaction(preparedTx).then(signedTx =>
                 broadcastTransaction(signedTx).then(executedTx => {
                         setExecutedTxId(executedTx.transactionHash);
@@ -31,13 +32,24 @@ export const TransactionCreator = () => {
         );
     }
 
+    const handleChangeAmount = (amount: string) => setAmount(amount); 
+
     return (
         <div className="transaction-creator">
             <RB.Container>
                 <h3>Transaction creator</h3>
-                <RB.Row className="justify-content-md-center mb-7">
+                <RB.Row className="justify-content-md-center mb-7 mt-4">
                     <div className="form">
                         <RB.Col>
+                            <RB.InputGroup className="mb-3 mw-50">
+                                <RB.FormControl
+                                    placeholder="Enter destination address"
+                                    aria-label="Address to send"
+                                    aria-describedby="basic-addon2"
+                                    value={address}
+                                    onChange={e => setAddress(e.target.value)}
+                                />
+                            </RB.InputGroup>
                             <RB.InputGroup className="mb-3 mw-50">
                                 <RB.FormControl
                                     placeholder="Enter amount to send"
@@ -50,7 +62,7 @@ export const TransactionCreator = () => {
                                     <RB.InputGroup.Text id="basic-addon2">ETH</RB.InputGroup.Text>
                                 </RB.InputGroup.Append>
                             </RB.InputGroup>
-                            <BalanceComponent handleChangeAmount={setAmount}/>
+                            <BalanceComponent handleChangeAmount={handleChangeAmount} account={account}/>
                             <RB.Button
                                 onClick={handlePrepareTransaction}
                                 variant="primary"
@@ -62,7 +74,7 @@ export const TransactionCreator = () => {
                     </div>
                 </RB.Row>
                 {executedTxId ? (
-                    <RB.Row className="justify-content-md-center">
+                    <RB.Row className="justify-content-md-center mt-3">
                         <a
                             href={`https://ropsten.etherscan.io/tx/${executedTxId}`}
                             rel="noopener noreferrer"
@@ -73,7 +85,7 @@ export const TransactionCreator = () => {
                     </RB.Row>
                 ) : null}
                 {isTxLoading ? (
-                    <RB.Spinner animation="border" role="status">
+                    <RB.Spinner animation="border" role="status" className="mt-3">
                         <span className="sr-only">Loading...</span>
                     </RB.Spinner>
                 ) : null}
