@@ -40,7 +40,7 @@ export const MetaMaskButton: React.FunctionComponent = () => {
             window.console.error('[MetaMask] - something went wrong!');
         }
 
-    }, [!!error]);
+    }, [error]);
 
     return (
         <div className="pg-metamask">

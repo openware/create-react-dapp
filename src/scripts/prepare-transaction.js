@@ -59,7 +59,7 @@ export const prepareTransaction = async (amountToSend, account, destinationAddre
      * With every new transaction you send using a specific wallet address,
      * you need to increase a nonce which is tied to the sender wallet.
      */
-    let nonce = await web3.eth.getTransactionCount(account || web3.eth.defaultAccount);
+    let nonce = await web3.eth.getTransactionCount(web3.eth.defaultAccount);
     window.console.log(`The outgoing transaction count for your wallet address is: ${nonce}`)
 
 
